@@ -13,28 +13,18 @@ namespace RentaCar
             //CarManagerTest();
             //UserManagerTest();
 
-            RentalsManager rentalsManager = new RentalsManager(new EfRentalsDal());
-            var rentalsAdd=rentalsManager.Add(new Rentals { CarId=1,CustomerId=1,RentDate=DateTime.Now,ReturnDate=DateTime.Today});
+            RentalManager rentalsManager = new RentalManager(new EfRentalDal());
+            var rentalsAdd=rentalsManager.Add(new Rental { CarId=1,CustomerId=1,RentDate=DateTime.Now,ReturnDate=new DateTime( 2021,02,14)});
             Console.WriteLine(rentalsAdd.Message);
 
             Console.Read();
         }
 
-        private static void UserManagerTest()
-        {
-            UserManager userManager = new UserManager(new EfUserDal());
-            var user = userManager.Add(new Users { FirstName = "Deniz", LastName = "Karakılıç", Email = "mihriban_karakilic@hotmail.com", Password = "1234" });
-            Console.WriteLine(user.Message);
-            foreach (var users in userManager.GetAll().Data)
-            {
-                Console.WriteLine(users.FirstName + " " + users.LastName);
-            }
-        }
 
         private static void BrandManagerTest()
         {
             BrandManager brandManager = new BrandManager(new EfBrandDal());
-            brandManager.Add(new Brand { Id = 1, Brandname = "Fo" });
+            brandManager.Add(new Brand { Id = 1, BrandName = "Fo" });
         }
 
         private static void CarManagerTest()

@@ -17,12 +17,16 @@ namespace Business.Concrete
         }
         public IResult Add(Rentals rentals)
         {
-            if (rentals.ReturnDate == null)
-            {
+            var dateRent = rentals.RentDate;
+            var dateReturn = rentals.ReturnDate;
+
+            if (dateRent<dateReturn ||dateReturn == null)
                 return new ErrorResult(Messages.RentalsError);
-            }
-            _rentalsDal.Add(rentals);
-            return new SuccessResult(Messages.RentalsAdded);
+            else
+            {
+                _rentalsDal.Add(rentals);
+                return new SuccessResult(Messages.RentalsAdded);
+            }          
         }
 
         public IResult Delete(Rentals rentals)

@@ -14,32 +14,32 @@ namespace Business.Concrete
         {
             _customerDal = customerDal;
         }
-        public IResult Add(Customers customers)
+        public IResult Add(Customer customers)
         {
             _customerDal.Add(customers);
             return new SuccessResult(Messages.Added);
         }
 
-        public IResult Update(Customers customers)
+        public IResult Update(Customer customers)
         {
             _customerDal.Update(customers);
             return new SuccessResult(Messages.Update);
         }
 
-        public IResult Delete(Customers customers)
+        public IResult Delete(Customer customers)
         {
             _customerDal.Delete(customers);
             return new SuccessResult(Messages.Deleted);
         }
 
-        public IDataResult<List<Customers>> GetAll()
+        public IDataResult<List<Customer>> GetAll()
         {           
-            return new SuccessDataResult<List<Customers>>(_customerDal.GetAll(),Messages.Listed);
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),Messages.Listed);
         }
 
-        public IDataResult<Customers> GetById(int userId)
+        public IDataResult<Customer> GetById(int userId)
         {
-            return new SuccessDataResult<Customers>(_customerDal.Get(I=>I.UserId == userId));
+            return new SuccessDataResult<Customer>(_customerDal.Get(I=>I.UserId == userId));
         }
     }
 }

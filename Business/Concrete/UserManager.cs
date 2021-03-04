@@ -1,45 +1,31 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
+using Core.Entities.Concrete;
 using DataAccess.Abstract;
-using Entities.Concrete;
 
 namespace Business.Concrete
 {
-    public class UserManager : IUserServis
+    public class UserManager : IUserService
     {
         IUserDal _userDal;
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
         }
-        public IResult Add(Users users)
-        {
-            if (users.FirstName == null || users.LastName == null || users.Password == null|| users.Email== null)
-            {
-                return new ErrorResult(Messages.UserNotAdded);
-            }
-            _userDal.Add(users);
-            return new SuccessResult(Messages.Added);
 
+        public void Add(User user)
+        {
+            _userDal.Add(user);
         }
 
-        public IResult Delete(Users users)
+        public User GetByMail(string email)
         {
-            _userDal.Delete(users);
-            return new SuccessResult(Messages.Deleted);
+            return _userDal.Get(I=>I.Email == email);
         }
 
-        public IResult Update(Users users)
+        public List<OperationClaim> GetClaim(User user)
         {
-            _userDal.Update(users);
-            return new SuccessResult(Messages.Update);
+            return _userDal.GetClaims(user);
         }
-
-        public IDataResult<List<Users>> GetAll()
-        {
-            return new SuccessDataResult<List<Users>>(_userDal.GetAll(),Messages.Listed);
-        } 
     }
 }

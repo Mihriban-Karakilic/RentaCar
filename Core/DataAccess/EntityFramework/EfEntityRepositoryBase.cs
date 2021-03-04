@@ -41,10 +41,6 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                #region information
-                //filtre null ise contextdeki car tablosuna yerleş ve oradaki tüm datayı getir.Null değilse filtreyi uygula getir.
-                //Arka planda select * from Car çalıştırıyor. 
-                #endregion
                 return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
             }
         }

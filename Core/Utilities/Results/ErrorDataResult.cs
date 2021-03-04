@@ -10,7 +10,6 @@
         {
 
         }
-        // datayı default haliyle kullanmak isterse
         public ErrorDataResult(string message) : base(default, false, message)
         {
 

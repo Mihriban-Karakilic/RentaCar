@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Business.Concrete
 {
-    public class BrandManager : IBrandServis
+    public class BrandManager : IBrandService
     {
         IBrandDal _brandDal;
         public BrandManager(IBrandDal brandDal)
@@ -16,7 +16,7 @@ namespace Business.Concrete
         }
         public IResult Add(Brand brand)
         {
-            if (brand.Brandname.Length > 2)
+            if (brand.BrandName.Length > 2)
             {
                 _brandDal.Add(brand);
                 return new SuccessResult(Messages.Added);

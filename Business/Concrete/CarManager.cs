@@ -1,14 +1,18 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 
 namespace Business.Concrete
 {
-    public class CarManager : ICarServis
+    public class CarManager : ICarService
     {
         ICarDal _carDal;
         public CarManager(ICarDal carDal)
@@ -16,15 +20,12 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]//aspect ekledik
         public IResult Add(Car car)
         {
-            if (car.DailyPrice > 0)
-            {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.Added);
-            }
-            else
-                return new ErrorResult(Messages.CarDailyPriceInvalid);
+            _carDal.Add(car);
+            return new SuccessResult(Messages.Added);
+            //return new ErrorResult(Messages.CarDailyPriceInvalid);
         }
 
         public IResult Delete(Car car)
@@ -45,12 +46,12 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
-            return new SuccessDataResult<List<Car>>( _carDal.GetAll());
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
-        public IDataResult<List<Car> >GetByDailyPrice(decimal min,decimal max)
+        public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
         {
-            return new SuccessDataResult<List<Car>> (_carDal.GetAll(c => c.DailyPrice >=min && c.DailyPrice <=max),Messages.Listed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.DailyPrice >= min && c.DailyPrice <= max), Messages.Listed);
         }
 
         public IDataResult<Car> GetById(int id)
@@ -60,12 +61,17 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<Car>> (_carDal.GetAll(c => c.BrandId == brandId));
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
         }
 
         public IDataResult<List<Car>> GetCarsByColorId(int colorId)
         {
-            return new SuccessDataResult<List<Car>> (_carDal.GetAll(c => c.ColorId == colorId));
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
+
+        //public IDataResult<List<CarDetailDto>> CarDetailDtos()
+        //{
+        //    return new SuccessDataResult<List<CarDetailDto>>(_carDal.CarDetailDtos());
+        //}
     }
 }
